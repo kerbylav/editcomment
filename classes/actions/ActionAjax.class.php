@@ -89,6 +89,14 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
             $this->Message_AddErrorSingle($sCheckResult);
         }
         
+        $sText=$this->Text_Parser(getRequest('comment_text'));
+        
+        if (strlen($sText) > Config::Get('plugin.editcomment.max_comment_length'))
+        {
+            $this->Message_AddErrorSingle($this->Lang_Get('plugin.editcomment.err_max_comment_length',array('maxlength'=>Config::Get('plugin.editcomment.max_comment_length'))));
+            return;
+        }
+        
         $sDE=date("Y-m-d H:i:s");
         
         $oOldData=$this->PluginEditcomment_Editcomment_GetLastEditData($oComment->getId());
@@ -100,8 +108,6 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         }
         else
         {
-            
-            $sText=$this->Text_Parser(getRequest('comment_text'));
             $oComment->setEditCount($oComment->getEditCount() + 1);
             $oComment->setEditDate($sDE);
             $oViewerLocal=$this->Viewer_GetLocalViewer();
