@@ -44,8 +44,8 @@ $config['deny_with_answers']=true;
 // ВНИМАНИЕ: применяется только к комментариям, отредактированным после того, как была включенаэта опция
 $config['add_edit_date']=true;
 
-// Я подтверждаю, что я честный человек и сделал пожертвование по ссылке http://livestreetcms.ru/profile/kerby/donate/ 
-$config['donated']=true;
+// Я подтверждаю, что хочу убрать ссылку на спонсора и, как честный человек, сделал пожертвование по ссылке http://livestreetcms.ru/profile/kerby/donate/ 
+$config['donated']=false;
 
 return $config;
 ?>
