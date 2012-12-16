@@ -6,7 +6,7 @@
 	<author>
 		<lang name="default">Alexei Lukin aka Kerby</lang>
 	</author>
-	<homepage>http://kerbbystudio.ru</homepage>
+	<homepage>http://kerbystudio.ru</homepage>
 	<version>1.0.0</version>
 	<requires>
 		<livestreet>1.0.1</livestreet>
