@@ -49,6 +49,8 @@ class PluginEditcomment_HookEditcomment extends Hook
     
     public function InjectSponsorLink($aParam)
     {
+        if (Config::Get('plugin.editcomment.donated')) return "";
+        
         return $this->Viewer_Fetch($this->PluginEditcomment_Editcomment_GetTemplateFilePath(__CLASS__, 'inject_sponsor_link.tpl'));
     }
 }
