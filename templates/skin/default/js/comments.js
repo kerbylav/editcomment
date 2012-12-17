@@ -25,6 +25,11 @@ ls.comments = (function($)
 	{
 		if (typeof (this.sBStyle) != 'undefined')
 			$('#comment-button-submit').css('display', this.sBStyle);
+		if (typeof (this.cbsclick) != 'undefined')
+		{
+			$('#comment-button-submit').unbind('click');
+			$('#comment-button-submit').attr('onclick', this.cbsclick);
+		}
 
 		var b = $('#comment-button-submit-edit');
 		if (b.length)
@@ -67,17 +72,26 @@ ls.comments = (function($)
 				{
 					thisObj.toggleCommentForm(idComment);
 					thisObj.sBStyle = $('#comment-button-submit').css('display');
-					var cbs=$('#comment-button-submit');
+					var cbs = $('#comment-button-submit');
 					cbs.css('display', 'none');
+					thisObj.cbsclick = $('#comment-button-submit').attr('onclick');
+					cbs.attr('disabled', 'disabled');
+
+					$('#comment-button-submit').attr('onclick', "");
+					$('#comment-button-submit').bind('click', function()
+					{
+						$('#comment-button-submit-edit').click();
+						return false;
+					});
 					if (result.bHasHistory)
 						cbs.after($(thisObj.options.history_button_code));
-					
+
 					cbs.after($(thisObj.options.edit_button_code));
 					if (thisObj.options.wysiwyg)
 					{
-							tinyMCE.execCommand('mceRemoveControl',false,'form_comment_text');
-							$('#form_comment_text').val(result.sCommentSource);
-							tinyMCE.execCommand('mceAddControl',true,'form_comment_text');
+						tinyMCE.execCommand('mceRemoveControl', false, 'form_comment_text');
+						$('#form_comment_text').val(result.sCommentSource);
+						tinyMCE.execCommand('mceAddControl', true, 'form_comment_text');
 					}
 					else
 						$('#form_comment_text').val(result.sCommentSource);
@@ -134,9 +148,17 @@ ls.comments = (function($)
 					$('#comment_content_id_' + idComment).html(result.sCommentText);
 					if (!result.bCanEditMore)
 						$('#comment_id_' + idComment).find('.editcomment_editlink').remove();
+					this.load(targetId, targetType, idComment, true);
+					if (ls.blocks)
+					{
+						var curItemBlock = ls.blocks.getCurrentItem('stream');
+						if (curItemBlock.data('type') == 'comment')
+						{
+							ls.blocks.load(curItemBlock, 'stream');
+						}
+					}
 				}
 
-				this.load(targetId, targetType, idComment, true);
 				ls.hook.run('ls_comments_edit_after', [ formObj, targetId, targetType, result ]);
 			}
 		}.bind(this));
@@ -150,7 +172,7 @@ ls.comments = (function($)
 		$('#comment-button-submit-edit').attr('disabled', 'disabled');
 
 		var lData = formObj.serializeJSON();
-		lData.form_comment_text='';
+		lData.form_comment_text = '';
 		var idComment = lData.reply;
 
 		ls.ajax(aRouter.ajax + 'editcomment-gethistory/', lData, function(result)
@@ -179,11 +201,10 @@ ls.comments = (function($)
 		}.bind(this));
 	}
 
-
 	this.init_editcomment = function()
 	{
 		this.super_toggleCommentForm = that.superior("toggleCommentForm");
-		ls.comments.toggleCommentForm =this.mytoggleCommentForm;
+		ls.comments.toggleCommentForm = this.mytoggleCommentForm;
 	}
 
 	return this;
