@@ -17,9 +17,47 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
 
     protected function RegisterEvent()
     {
+        $this->AddEvent('editcomment-gethistory', 'EventGetHistory');
         $this->AddEvent('editcomment-getsource', 'EventGetSource');
         $this->AddEvent('editcomment-edit', 'EventEdit');
         parent::RegisterEvent();
+    }
+
+    protected function EventGetHistory()
+    {
+        /**
+		 * Устанавливаем формат Ajax ответа
+		 */
+        $this->Viewer_SetResponseAjax('json');
+        
+        if (!$this->oUserCurrent)
+        {
+            $this->Message_AddErrorSingle($this->Lang_Get('not_access'));
+            return;
+        }
+        
+        $oComment=$this->Comment_GetCommentById(getRequest('reply'));
+        
+        if (!$oComment)
+        {
+            $this->Message_AddErrorSingle($this->Lang_Get('not_access'));
+            return;
+        }
+        
+        $sCheckResult=$this->ACL_UserCanEditComment($this->oUserCurrent, $oComment, PHP_INT_MAX);
+        if ($sCheckResult !== true)
+        {
+            $this->Message_AddErrorSingle($sCheckResult);
+        }
+        
+        $aData=$this->PluginEditcomment_Editcomment_GetDataItemsByCommentId($oComment->getId(),array('#order'=>array('date_add'=>'desc')));
+        
+        foreach ($aData as $oData)
+            $oData->setText($this->Text_Parser($oData->getCommentTextSource()));
+        
+        $oViewerLocal=$this->Viewer_GetLocalViewer();
+        $oViewerLocal->Assign('aHistory', $aData);
+        $this->Viewer_AssignAjax('sContent', $oViewerLocal->Fetch($this->PluginEditcomment_Editcomment_GetTemplateFilePath(__CLASS__, 'history.tpl')));
     }
 
     protected function EventGetSource()
@@ -60,6 +98,7 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
                 $sCommentSource=$oComment->getText();
         
         $this->Viewer_AssignAjax('sCommentSource', $sCommentSource);
+        $this->Viewer_AssignAjax('bHasHistory', !is_null($oEditData));
     }
 
     protected function EventEdit()

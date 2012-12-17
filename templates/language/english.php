@@ -18,6 +18,9 @@ return array(
 'no_edit_rights'=>'Not enough rights',
 
 'edit_button_title'=>'edit',
+'history_button_title'=>'history',
+'history_window_title'=>'Editing history',
+
 
 'err_max_edit_count'=>'Maximun number of editing attempts is reached',
 'err_max_edit_period'=>'Period of editing is over',

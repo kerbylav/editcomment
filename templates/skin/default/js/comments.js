@@ -30,6 +30,9 @@ ls.comments = (function($)
 		var b = $('#comment-button-submit-edit');
 		if (b.length)
 			b.remove();
+		b = $('#comment-button-history');
+		if (b.length)
+			b.remove();
 
 		super_toggleCommentForm(idComment, bNoFocus);
 	}
@@ -65,8 +68,12 @@ ls.comments = (function($)
 				{
 					thisObj.toggleCommentForm(idComment);
 					thisObj.sBStyle = $('#comment-button-submit').css('display');
-					$('#comment-button-submit').css('display', 'none');
-					$('#comment-button-submit').after($(thisObj.options.edit_button_code));
+					var cbs=$('#comment-button-submit');
+					cbs.css('display', 'none');
+					if (result.bHasHistory)
+						cbs.after($(thisObj.options.history_button_code));
+					
+					cbs.after($(thisObj.options.edit_button_code));
 					if (thisObj.options.wysiwyg)
 					{
 							tinyMCE.execCommand('mceRemoveControl',false,'form_comment_text');
@@ -135,6 +142,44 @@ ls.comments = (function($)
 			}
 		}.bind(this));
 	}
+
+	this.showHistory = function()
+	{
+		formObj = $('#form_comment');
+
+		$('#form_comment_text').addClass(this.options.classes.form_loader).attr('readonly', true);
+		$('#comment-button-submit-edit').attr('disabled', 'disabled');
+
+		var lData = formObj.serializeJSON();
+		lData.form_comment_text='';
+		var idComment = lData.reply;
+
+		ls.ajax(aRouter.ajax + 'editcomment-gethistory/', lData, function(result)
+		{
+			$('#comment-button-submit-edit').removeAttr('disabled');
+			if (!result)
+			{
+				this.enableFormComment();
+				ls.msg.error('Error', 'Please try again later');
+				return;
+			}
+			if (result.bStateError)
+			{
+				this.enableFormComment();
+				ls.msg.error(null, result.sMsg);
+			}
+			else
+			{
+				if (result.sMsg)
+					ls.msg.notice(null, result.sMsg);
+
+				this.enableFormComment();
+				$('#editcomment-history-content').html(result.sContent);
+				$('#modal-editcomment-history').jqmShow();
+			}
+		}.bind(this));
+	}
+
 
 	this.init_editcomment = function()
 	{

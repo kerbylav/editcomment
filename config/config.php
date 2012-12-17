@@ -35,7 +35,7 @@ $config['max_history_depth']=0;
 $config['max_edit_count']=5;
 
 // Максимальное время (в секундах), в течении которого можно отредактировать комментарий. 0 - без ограничений времени
-$config['max_edit_period']=20*60;
+$config['max_edit_period']=2*60;
 
 // Запрещять ли редактировать комментарии, у которых есть ответы?
 $config['deny_with_answers']=true;

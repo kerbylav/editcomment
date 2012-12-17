@@ -10,3 +10,35 @@
     font-size: 80%;
     opacity: 0.35;
 }
+
+button#comment-button-history
+{
+    margin-left: 5px;
+}
+
+.modal.editcomment-history
+{
+    width: 740px;
+    margin-left: -370px;
+}
+
+#editcomment-history-content
+{
+    padding: 10px;
+    width: 660px;
+    max-width: 660px;
+    max-height: 350px;
+    overflow: auto;
+}
+
+.editcomment_history_item
+{
+    border: 1px solid #777;
+    margin-bottom: 10px;
+}
+
+.editcomment_history_item header
+{
+    padding: 5px;
+    background-color: #777;
+}
