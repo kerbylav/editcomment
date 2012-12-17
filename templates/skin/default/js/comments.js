@@ -75,7 +75,6 @@ ls.comments = (function($)
 					var cbs = $('#comment-button-submit');
 					cbs.css('display', 'none');
 					thisObj.cbsclick = $('#comment-button-submit').attr('onclick');
-					cbs.attr('disabled', 'disabled');
 
 					$('#comment-button-submit').attr('onclick', "");
 					$('#comment-button-submit').bind('click', function()
