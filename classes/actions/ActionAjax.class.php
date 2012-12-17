@@ -50,7 +50,7 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
             $this->Message_AddErrorSingle($sCheckResult);
         }
         
-        $aData=$this->PluginEditcomment_Editcomment_GetDataItemsByCommentId($oComment->getId(),array('#order'=>array('date_add'=>'desc')));
+        $aData=$this->PluginEditcomment_Editcomment_GetDataItemsByCommentId($oComment->getId(), array('#order'=>array('date_add'=>'desc')));
         
         foreach ($aData as $oData)
             $oData->setText($this->Text_Parser($oData->getCommentTextSource()));
@@ -130,9 +130,9 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         
         $sText=$this->Text_Parser(getRequest('comment_text'));
         
-        if (mb_strlen($sText,'utf-8') > Config::Get('plugin.editcomment.max_comment_length'))
+        if (mb_strlen($sText, 'utf-8') > Config::Get('plugin.editcomment.max_comment_length'))
         {
-            $this->Message_AddErrorSingle($this->Lang_Get('plugin.editcomment.err_max_comment_length',array('maxlength'=>Config::Get('plugin.editcomment.max_comment_length'))));
+            $this->Message_AddErrorSingle($this->Lang_Get('plugin.editcomment.err_max_comment_length', array('maxlength'=>Config::Get('plugin.editcomment.max_comment_length'))));
             return;
         }
         
@@ -147,6 +147,8 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         }
         else
         {
+            if (Config::Get('plugin.editcomment.change_online'))
+                $oComment->setDate($sDE);
             $oComment->setEditCount($oComment->getEditCount() + 1);
             $oComment->setEditDate($sDE);
             $oViewerLocal=$this->Viewer_GetLocalViewer();
@@ -161,6 +163,17 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
             
             if ($this->Comment_UpdateComment($oComment))
             {
+                if (Config::Get('plugin.editcomment.change_online'))
+                {
+                    $oCommentOnline=Engine::GetEntity('Comment_CommentOnline');
+                    $oCommentOnline->setTargetId($oComment->getTargetId());
+                    $oCommentOnline->setTargetType($oComment->getTargetType());
+                    $oCommentOnline->setTargetParentId($oComment->getTargetParentId());
+                    $oCommentOnline->setCommentId($oComment->getId());
+                    
+                    $this->Comment_AddCommentOnline($oCommentOnline);
+                }
+                
                 $this->oUserCurrent->setDateCommentLast($sDE);
                 $this->User_Update($this->oUserCurrent);
                 
