@@ -21,8 +21,7 @@ ls.comments = (function($)
 		}
 	}
 
-	var super_toggleCommentForm = that.superior("toggleCommentForm");
-	this.toggleCommentForm = function(idComment, bNoFocus)
+	this.mytoggleCommentForm = function(idComment, bNoFocus)
 	{
 		if (typeof (this.sBStyle) != 'undefined')
 			$('#comment-button-submit').css('display', this.sBStyle);
@@ -34,7 +33,7 @@ ls.comments = (function($)
 		if (b.length)
 			b.remove();
 
-		super_toggleCommentForm(idComment, bNoFocus);
+		this.super_toggleCommentForm(idComment, bNoFocus);
 	}
 
 	this.editComment = function(idComment)
@@ -183,6 +182,8 @@ ls.comments = (function($)
 
 	this.init_editcomment = function()
 	{
+		this.super_toggleCommentForm = that.superior("toggleCommentForm");
+		ls.comments.toggleCommentForm =this.mytoggleCommentForm;
 	}
 
 	return this;
