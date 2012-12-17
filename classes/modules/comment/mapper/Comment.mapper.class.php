@@ -38,7 +38,20 @@ class PluginEditcomment_ModuleComment_MapperComment extends PluginEditcomment_In
         {
             $oComment->setId($iId);
             $oComment->setEditDate($oComment->getDate());
+            
             $this->UpdateEditCommentData($oComment);
+            
+            $oData=Engine::GetEntity('PluginEditcomment_ModuleEditcomment_EntityData');
+            if (isset($_REQUEST['comment_text']))
+                $oData->setCommentTextSource(getRequest('comment_text'));
+            else
+                $oData->setCommentTextSource($oComment->getText());
+            
+            $oData->setCommentId($oComment->getId());
+            $oData->setUserId($oComment->getUserId());
+            $oData->setDateAdd($oComment->getDate());
+            
+            $oData->save();
         }
         
         return $iId;
