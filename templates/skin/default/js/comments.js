@@ -145,16 +145,16 @@ ls.comments = (function($)
 				if (result.bEdited)
 				{
 					$('#comment_content_id_' + idComment).html(result.sCommentText);
-					if (!result.bCanEditMore)
-						$('#comment_id_' + idComment).find('.editcomment_editlink').remove();
-					this.load(targetId, targetType, idComment, true);
-					if (ls.blocks)
+				}
+				if (!result.bCanEditMore)
+					$('#comment_id_' + idComment).find('.editcomment_editlink').remove();
+				this.load(targetId, targetType, idComment, true);
+				if (ls.blocks)
+				{
+					var curItemBlock = ls.blocks.getCurrentItem('stream');
+					if (curItemBlock.data('type') == 'comment')
 					{
-						var curItemBlock = ls.blocks.getCurrentItem('stream');
-						if (curItemBlock.data('type') == 'comment')
-						{
-							ls.blocks.load(curItemBlock, 'stream');
-						}
+						ls.blocks.load(curItemBlock, 'stream');
 					}
 				}
 
