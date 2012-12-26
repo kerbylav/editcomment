@@ -48,6 +48,7 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         if ($sCheckResult !== true)
         {
             $this->Message_AddErrorSingle($sCheckResult);
+            return;
         }
         
         $aData=$this->PluginEditcomment_Editcomment_GetDataItemsByCommentId($oComment->getId(), array('#order'=>array('date_add'=>'desc')));
@@ -85,6 +86,7 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         if ($sCheckResult !== true)
         {
             $this->Message_AddErrorSingle($sCheckResult);
+            return;
         }
         
         $oEditData=$this->PluginEditcomment_Editcomment_GetLastEditData($oComment->getId());
@@ -126,6 +128,7 @@ class PluginEditcomment_ActionAjax extends PluginEditcomment_Inherit_ActionAjax
         if ($sCheckResult !== true)
         {
             $this->Message_AddErrorSingle($sCheckResult);
+            return;
         }
         
         $sText=$this->Text_Parser(getRequest('comment_text'));
