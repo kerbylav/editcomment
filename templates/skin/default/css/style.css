@@ -11,6 +11,11 @@
     opacity: 0.35;
 }
 
+button#comment-button-cancel
+{
+    margin-left: 5px;
+}
+
 button#comment-button-history
 {
     margin-left: 5px;

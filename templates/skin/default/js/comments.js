@@ -34,14 +34,30 @@ ls.comments = (function($)
 		var b = $('#comment-button-submit-edit');
 		if (b.length)
 			b.remove();
+
 		b = $('#comment-button-history');
 		if (b.length)
 			b.remove();
 
-		this.super_toggleCommentForm(idComment, bNoFocus);
+        b = $('#comment-button-cancel');
+        if (b.length)
+            b.remove();
+
+        this.super_toggleCommentForm(idComment, bNoFocus);
 	}
 
-	this.editComment = function(idComment)
+    this.cancelEditComment = function(idComment)
+    {
+        var reply = $('#reply');
+        if (!reply.length)
+        {
+            return;
+        }
+
+        reply.hide();
+    }
+
+        this.editComment = function(idComment)
 	{
 		var reply = $('#reply');
 		if (!reply.length)
@@ -84,6 +100,8 @@ ls.comments = (function($)
 					});
 					if (result.bHasHistory)
 						cbs.after($(thisObj.options.history_button_code));
+
+                    cbs.after($(thisObj.options.cancel_button_code));
 
 					cbs.after($(thisObj.options.edit_button_code));
 					if (thisObj.options.wysiwyg)

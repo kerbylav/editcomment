@@ -44,6 +44,7 @@ class PluginEditcomment_HookEditcomment extends Hook
     {
         $this->Viewer_Assign('iTargetId', $aParam['iTargetId']);
         $this->Viewer_Assign('sTargetType', $aParam['sTargetType']);
+        $this->Viewer_Assign('oUserCurrent', $this->User_GetUserCurrent());
         $sText=$this->Viewer_Fetch($this->PluginEditcomment_Editcomment_GetTemplateFilePath(__CLASS__, 'inject_edit_button_code.tpl'));
         return $sText.$this->Viewer_Fetch($this->PluginEditcomment_Editcomment_GetTemplateFilePath(__CLASS__, 'window_history.tpl'));
     }

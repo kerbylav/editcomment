@@ -17,7 +17,8 @@ return array(
 
 'no_edit_rights'=>'Not enough rights',
 
-'edit_button_title'=>'edit',
+'edit_button_title'=>'save',
+'cancel_button_title'=>'cancel',
 'history_button_title'=>'history',
 'history_window_title'=>'Editing history',
 

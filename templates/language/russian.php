@@ -18,7 +18,8 @@ return array(
 
 'no_edit_rights'=>'Нет прав редактировать этот комментарий',
 
-'edit_button_title'=>'отредактировать',
+'edit_button_title'=>'сохранить',
+'cancel_button_title'=>'отменить',
 'history_button_title'=>'история',
 'history_window_title'=>'История редактирования',
 
