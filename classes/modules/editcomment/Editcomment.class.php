@@ -29,7 +29,8 @@ class PluginEditcomment_ModuleEditcomment extends ModuleORM
     
     public function GetLastEditData($iCommentId)
     {
-        return array_pop($this->PluginEditcomment_Editcomment_GetDataItemsByFilter(array('comment_id'=>$iCommentId, '#order'=>array('date_add'=>'desc'), '#limit'=>array(0, 1))));
+        $arr=$this->PluginEditcomment_Editcomment_GetDataItemsByFilter(array('comment_id'=>$iCommentId, '#order'=>array('date_add'=>'desc'), '#limit'=>array(0, 1)));
+        return array_pop($arr);
     }    
     
     public function HasAnswers($sId)
