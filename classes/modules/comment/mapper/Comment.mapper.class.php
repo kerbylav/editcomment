@@ -24,7 +24,7 @@ class PluginEditcomment_ModuleComment_MapperComment extends PluginEditcomment_In
         WHERE
         comment_id = ?d
         ";
-        if ($this->oDb->query($sql, $oComment->getEditCount(), $oComment->getEditDate(), $oComment->getId()) !== false)
+        if ($this->oDb->query($sql, $oComment->getEditCount() ? $oComment->getEditCount() : 0, $oComment->getEditDate() ? $oComment->getEditDate() : date("Y-m-d H:i:s"), $oComment->getId()) !== false)
         {
             return true;
         }
